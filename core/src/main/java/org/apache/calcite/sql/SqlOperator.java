@@ -234,24 +234,6 @@ public abstract class SqlOperator {
   public abstract SqlSyntax getSyntax();
 
   /**
-   * Creates a call to this operand with an array of operands.
-   *
-   * <p>The position of the resulting call is the union of the <code>
-   * pos</code> and the positions of all of the operands.
-   *
-   * @param functionQualifier function qualifier (e.g. "DISTINCT"), may be
-   * @param pos               parser position of the identifier of the call
-   * @param operands          array of operands
-   */
-  public SqlCall createCall(
-      SqlLiteral functionQualifier,
-      SqlParserPos pos,
-      SqlNode... operands) {
-    pos = pos.plusAll(Arrays.asList(operands));
-    return new SqlBasicCall(this, operands, pos, false, functionQualifier);
-  }
-
-  /**
    * Creates a call to this operand with an array of operands and specifying
    * whether it ignores nulls.
    *
@@ -282,7 +264,7 @@ public abstract class SqlOperator {
   public final SqlCall createCall(
       SqlParserPos pos,
       SqlNode... operands) {
-    return createCall(null, pos, operands);
+    return createCall(null, null, pos, operands);
   }
 
   /**
@@ -298,6 +280,7 @@ public abstract class SqlOperator {
       SqlNodeList nodeList) {
     return createCall(
         null,
+        null,
         nodeList.getParserPosition(),
         nodeList.toArray());
   }
@@ -312,6 +295,7 @@ public abstract class SqlOperator {
       SqlParserPos pos,
       List<? extends SqlNode> operandList) {
     return createCall(
+        null,
         null,
         pos,
         operandList.toArray(new SqlNode[0]));

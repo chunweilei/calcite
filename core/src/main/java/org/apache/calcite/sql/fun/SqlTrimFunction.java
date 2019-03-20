@@ -127,6 +127,7 @@ public class SqlTrimFunction extends SqlFunction {
 
   public SqlCall createCall(
       SqlLiteral functionQualifier,
+      SqlLiteral ignoreNulls,
       SqlParserPos pos,
       SqlNode... operands) {
     assert functionQualifier == null;
@@ -151,7 +152,7 @@ public class SqlTrimFunction extends SqlFunction {
       throw new IllegalArgumentException(
           "invalid operand count " + Arrays.toString(operands));
     }
-    return super.createCall(functionQualifier, pos, operands);
+    return super.createCall(functionQualifier, ignoreNulls, pos, operands);
   }
 
   public boolean checkOperandTypes(

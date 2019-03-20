@@ -276,6 +276,7 @@ public class SqlMatchRecognize extends SqlCall {
 
     @Override public SqlCall createCall(
         SqlLiteral functionQualifier,
+        SqlLiteral ignoreNulls,
         SqlParserPos pos,
         SqlNode... operands) {
       assert functionQualifier == null;

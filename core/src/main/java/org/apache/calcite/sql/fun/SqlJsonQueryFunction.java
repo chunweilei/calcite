@@ -77,7 +77,7 @@ public class SqlJsonQueryFunction extends SqlFunction {
   }
 
   @Override public SqlCall createCall(SqlLiteral functionQualifier,
-      SqlParserPos pos, SqlNode... operands) {
+      SqlLiteral ignoreNulls, SqlParserPos pos, SqlNode... operands) {
     if (operands[1] == null) {
       operands[1] = SqlLiteral.createSymbol(SqlJsonQueryWrapperBehavior.WITHOUT_ARRAY, pos);
     }
@@ -87,7 +87,7 @@ public class SqlJsonQueryFunction extends SqlFunction {
     if (operands[3] == null) {
       operands[3] = SqlLiteral.createSymbol(SqlJsonQueryEmptyOrErrorBehavior.NULL, pos);
     }
-    return super.createCall(functionQualifier, pos, operands);
+    return super.createCall(functionQualifier, ignoreNulls, pos, operands);
   }
 
   private void unparseEmptyOrErrorBehavior(SqlWriter writer,

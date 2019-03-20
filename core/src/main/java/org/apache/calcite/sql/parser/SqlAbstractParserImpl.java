@@ -430,8 +430,7 @@ public abstract class SqlAbstractParserImpl {
           funcType);
     }
 
-    SqlCall call = fun.createCall(functionQualifier, pos, operands);
-    call.setIgnoreNulls(ignoreNulls);
+    SqlCall call = fun.createCall(functionQualifier, ignoreNulls, pos, operands);
     return call;
   }
 

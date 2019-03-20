@@ -428,10 +428,11 @@ public class SqlJdbcFunctionCall extends SqlFunction {
 
   public SqlCall createCall(
       SqlLiteral functionQualifier,
+      SqlLiteral ignoreNulls,
       SqlParserPos pos,
       SqlNode... operands) {
     thisOperands = operands;
-    return super.createCall(functionQualifier, pos, operands);
+    return super.createCall(functionQualifier, ignoreNulls, pos, operands);
   }
 
   @Override public SqlNode rewriteCall(SqlValidator validator,

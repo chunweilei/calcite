@@ -53,13 +53,13 @@ public class SqlJsonArrayFunction extends SqlFunction {
   }
 
   @Override public SqlCall createCall(SqlLiteral functionQualifier,
-      SqlParserPos pos, SqlNode... operands) {
+      SqlLiteral ignoreNulls, SqlParserPos pos, SqlNode... operands) {
     if (operands[0] == null) {
       operands[0] =
           SqlLiteral.createSymbol(SqlJsonConstructorNullClause.ABSENT_ON_NULL,
               pos);
     }
-    return super.createCall(functionQualifier, pos, operands);
+    return super.createCall(functionQualifier, ignoreNulls, pos, operands);
   }
 
   @Override public String getSignatureTemplate(int operandsCount) {

@@ -55,8 +55,8 @@ public class SqlJsonTypeFunction extends SqlFunction {
   }
 
   @Override public SqlCall createCall(SqlLiteral functionQualifier,
-      SqlParserPos pos, SqlNode... operands) {
-    return super.createCall(functionQualifier, pos, operands);
+      SqlLiteral ignoreNulls, SqlParserPos pos, SqlNode... operands) {
+    return super.createCall(functionQualifier, ignoreNulls, pos, operands);
   }
 
   @Override public void unparse(SqlWriter writer, SqlCall call, int leftPrec,

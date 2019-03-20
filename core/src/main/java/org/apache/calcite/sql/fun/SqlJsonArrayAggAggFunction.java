@@ -70,7 +70,7 @@ public class SqlJsonArrayAggAggFunction extends SqlAggFunction {
   }
 
   @Override public SqlCall createCall(SqlLiteral functionQualifier,
-      SqlParserPos pos, SqlNode... operands) {
+      SqlLiteral ignoreNulls, SqlParserPos pos, SqlNode... operands) {
     assert operands.length == 1 || operands.length == 2;
     final SqlNode valueExpr = operands[0];
     if (operands.length == 2) {
@@ -85,7 +85,7 @@ public class SqlJsonArrayAggAggFunction extends SqlAggFunction {
   }
 
   private SqlCall createCall_(SqlLiteral functionQualifier, SqlParserPos pos, SqlNode valueExpr) {
-    return super.createCall(functionQualifier, pos, valueExpr);
+    return super.createCall(functionQualifier, null, pos, valueExpr);
   }
 
   public SqlJsonArrayAggAggFunction with(SqlJsonConstructorNullClause nullClause) {

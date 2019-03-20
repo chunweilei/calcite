@@ -818,6 +818,7 @@ public class SqlWindow extends SqlCall {
 
     public SqlCall createCall(
         SqlLiteral functionQualifier,
+        SqlLiteral ignoreNulls,
         SqlParserPos pos,
         SqlNode... operands) {
       assert functionQualifier == null;

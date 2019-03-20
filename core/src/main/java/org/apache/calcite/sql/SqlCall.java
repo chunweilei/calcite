@@ -47,6 +47,12 @@ public abstract class SqlCall extends SqlNode {
     this.ignoreNulls = null;
   }
 
+  /**
+   * Creates a call.
+   *
+   * @param pos Parser position
+   * @param ignoreNulls Whether it ignores nulls
+   */
   public SqlCall(SqlParserPos pos, SqlLiteral ignoreNulls) {
     super(pos);
     this.ignoreNulls = ignoreNulls;
@@ -92,7 +98,7 @@ public abstract class SqlCall extends SqlNode {
 
   @Override public SqlNode clone(SqlParserPos pos) {
     final List<SqlNode> operandList = getOperandList();
-    return getOperator().createCall(getFunctionQuantifier(), pos,
+    return getOperator().createCall(getFunctionQuantifier(), ignoreNulls(), pos,
         operandList.toArray(new SqlNode[0]));
   }
 
@@ -216,11 +222,6 @@ public abstract class SqlCall extends SqlNode {
   /** Returns whether it ignores nulls. */
   public SqlLiteral ignoreNulls() {
     return ignoreNulls;
-  }
-
-  /** Set whether it ignores nulls. */
-  public void setIgnoreNulls(SqlLiteral ignoreNulls) {
-    this.ignoreNulls = ignoreNulls;
   }
 }
 

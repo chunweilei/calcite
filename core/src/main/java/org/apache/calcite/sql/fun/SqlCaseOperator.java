@@ -282,6 +282,7 @@ public class SqlCaseOperator extends SqlOperator {
 
   public SqlCall createCall(
       SqlLiteral functionQualifier,
+      SqlLiteral ignoreNulls,
       SqlParserPos pos,
       SqlNode... operands) {
     assert functionQualifier == null;

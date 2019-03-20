@@ -61,7 +61,7 @@ public class SqlJsonValueFunction extends SqlFunction {
   }
 
   @Override public SqlCall createCall(SqlLiteral functionQualifier,
-      SqlParserPos pos, SqlNode... operands) {
+      SqlLiteral ignoreNulls, SqlParserPos pos, SqlNode... operands) {
     List<SqlNode> operandList = new ArrayList<>();
     operandList.add(operands[0]);
     if (operands[1] == null) {
@@ -92,7 +92,7 @@ public class SqlJsonValueFunction extends SqlFunction {
               null, null, pos);
       operandList.add(defaultTypeSpec);
     }
-    return super.createCall(functionQualifier, pos,
+    return super.createCall(functionQualifier, ignoreNulls, pos,
         operandList.toArray(SqlNode.EMPTY_ARRAY));
   }
 

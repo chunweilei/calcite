@@ -232,7 +232,7 @@ public class RexSqlStandardConvertletTable
             ++i;
           }
           SqlNode elseExpr = operands[i];
-          return op.createCall(null, SqlParserPos.ZERO, null, whenList, thenList, elseExpr);
+          return op.createCall(null, null, SqlParserPos.ZERO, null, whenList, thenList, elseExpr);
         });
   }
 

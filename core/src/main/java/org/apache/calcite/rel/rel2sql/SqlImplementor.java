@@ -809,12 +809,12 @@ public abstract class SqlImplementor {
       if (op instanceof SqlSumEmptyIsZeroAggFunction) {
         final SqlNode node =
             withOrder(
-                SqlStdOperatorTable.SUM.createCall(qualifier, POS, operands),
+                SqlStdOperatorTable.SUM.createCall(qualifier, null, POS, operands),
                 orderList);
         return SqlStdOperatorTable.COALESCE.createCall(POS, node,
             SqlLiteral.createExactNumeric("0", POS));
       } else {
-        return withOrder(op.createCall(qualifier, POS, operands), orderList);
+        return withOrder(op.createCall(qualifier, null, POS, operands), orderList);
       }
     }
 
