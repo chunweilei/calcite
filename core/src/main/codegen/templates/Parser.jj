@@ -5623,6 +5623,24 @@ SqlCall withinGroup(SqlNode arg) :
     }
 }
 
+SqlCall nullTreatment(SqlCall arg) :
+{
+    final Span span;
+}
+{
+    (
+        <IGNORE> { span = span(); } <NULLS> {
+            return SqlStdOperatorTable.IGNORE_NULLS.createCall(
+                span.end(this), arg);
+        }
+    |
+        <RESPECT> { span = span(); } <NULLS> {
+            return SqlStdOperatorTable.RESPECT_NULLS.createCall(
+                span.end(this), arg);
+        }
+    )
+}
+
 /**
  * Parses a call to a named function (could be a builtin with regular
  * syntax, or else a UDF).
@@ -5681,6 +5699,9 @@ SqlNode NamedFunctionCall() :
     {
         call = createCall(qualifiedName, s.end(this), funcType, quantifier, args);
     }
+    [
+        call = nullTreatment(call)
+    ]
     [
         call = withinGroup(call)
     ]
@@ -6369,6 +6390,7 @@ SqlPostfixOperator PostfixRowOperator() :
 |   < HOLD: "HOLD" >
 |   < HOUR: "HOUR" >
 |   < IDENTITY: "IDENTITY" >
+|   < IGNORE: "IGNORE" >
 |   < IMMEDIATE: "IMMEDIATE" >
 |   < IMMEDIATELY: "IMMEDIATELY" >
 |   < IMPLEMENTATION: "IMPLEMENTATION" >
@@ -6579,6 +6601,7 @@ SqlPostfixOperator PostfixRowOperator() :
 |   < REPEATABLE: "REPEATABLE" >
 |   < REPLACE: "REPLACE" >
 |   < RESET: "RESET" >
+|   < RESPECT: "RESPECT" >
 |   < RESTART: "RESTART" >
 |   < RESTRICT: "RESTRICT" >
 |   < RESULT: "RESULT" >
