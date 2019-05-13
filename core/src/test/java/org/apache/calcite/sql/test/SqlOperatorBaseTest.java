@@ -4324,6 +4324,18 @@ public abstract class SqlOperatorBaseTest {
     tester1.checkNull("DIFFERENCE(cast(null as varchar(1)), 'muller')");
   }
 
+  @Test public void testReverseFunc() {
+    final SqlTester testerMysql = tester(SqlLibrary.MYSQL);
+    testerMysql.setFor(SqlLibraryOperators.REVERSE);
+    testerMysql.checkString("reverse('')", "", "VARCHAR(0) NOT NULL");
+    testerMysql.checkString("reverse('123')", "321", "VARCHAR(3) NOT NULL");
+    testerMysql.checkString("reverse('abc')", "cba", "VARCHAR(3) NOT NULL");
+    testerMysql.checkString("reverse('ABC')", "CBA", "VARCHAR(3) NOT NULL");
+    testerMysql.checkString("reverse('Hello World')", "dlroW olleH", "VARCHAR(11) NOT NULL");
+    testerMysql.checkString("reverse(_UTF8'\u4F60\u597D')", "好你", "VARCHAR(2) NOT NULL");
+    testerMysql.checkNull("reverse(cast(null as varchar(1)))");
+  }
+
   @Test public void testUpperFunc() {
     tester.setFor(SqlStdOperatorTable.UPPER);
     tester.checkString("upper('a')", "A", "CHAR(1) NOT NULL");

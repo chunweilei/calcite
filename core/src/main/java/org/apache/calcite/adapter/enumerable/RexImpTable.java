@@ -101,6 +101,7 @@ import static org.apache.calcite.sql.fun.SqlLibraryOperators.JSON_TYPE;
 import static org.apache.calcite.sql.fun.SqlLibraryOperators.REPEAT;
 import static org.apache.calcite.sql.fun.SqlLibraryOperators.SOUNDEX;
 import static org.apache.calcite.sql.fun.SqlLibraryOperators.SPACE;
+import static org.apache.calcite.sql.fun.SqlLibraryOperators.REVERSE;
 import static org.apache.calcite.sql.fun.SqlLibraryOperators.TRANSLATE3;
 import static org.apache.calcite.sql.fun.SqlStdOperatorTable.ABS;
 import static org.apache.calcite.sql.fun.SqlStdOperatorTable.ACOS;
@@ -294,6 +295,7 @@ public class RexImpTable {
     defineMethod(SPACE, BuiltInMethod.SPACE.method, NullPolicy.STRICT);
     defineMethod(SOUNDEX, BuiltInMethod.SOUNDEX.method, NullPolicy.STRICT);
     defineMethod(DIFFERENCE, BuiltInMethod.DIFFERENCE.method, NullPolicy.STRICT);
+    defineMethod(REVERSE, BuiltInMethod.REVERSE.method, NullPolicy.STRICT);
 
     final TrimImplementor trimImplementor = new TrimImplementor();
     defineImplementor(TRIM, NullPolicy.STRICT, trimImplementor, false);
