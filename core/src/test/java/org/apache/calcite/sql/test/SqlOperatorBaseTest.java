@@ -309,8 +309,8 @@ public abstract class SqlOperatorBaseTest {
 
   protected SqlTester oracleTester() {
     return tester.withOperatorTable(
-            SqlLibraryOperatorTableFactory.INSTANCE
-                .getOperatorTable(SqlLibrary.STANDARD, SqlLibrary.ORACLE))
+        SqlLibraryOperatorTableFactory.INSTANCE
+            .getOperatorTable(SqlLibrary.STANDARD, SqlLibrary.ORACLE))
         .withConnectionFactory(
             CalciteAssert.EMPTY_CONNECTION_FACTORY
                 .with(new CalciteAssert
@@ -1503,27 +1503,27 @@ public abstract class SqlOperatorBaseTest {
       cal.setTimeInMillis(System.currentTimeMillis());
       try {
         switch (timeUnit) {
-        case Calendar.DAY_OF_MONTH:
-          // Within two minutes of the end of the day. Wait in 10s
-          // increments until calendar moves into the next next day.
-          if ((cal.get(Calendar.HOUR_OF_DAY) == 23)
-              && (cal.get(Calendar.MINUTE) >= 58)) {
-            Thread.sleep(10 * 1000);
-            continue;
-          }
-          return cal;
+          case Calendar.DAY_OF_MONTH:
+            // Within two minutes of the end of the day. Wait in 10s
+            // increments until calendar moves into the next next day.
+            if ((cal.get(Calendar.HOUR_OF_DAY) == 23)
+                && (cal.get(Calendar.MINUTE) >= 58)) {
+              Thread.sleep(10 * 1000);
+              continue;
+            }
+            return cal;
 
-        case Calendar.HOUR_OF_DAY:
-          // Within two minutes of the top of the hour. Wait in 10s
-          // increments until calendar moves into the next next day.
-          if (cal.get(Calendar.MINUTE) >= 58) {
-            Thread.sleep(10 * 1000);
-            continue;
-          }
-          return cal;
+          case Calendar.HOUR_OF_DAY:
+            // Within two minutes of the top of the hour. Wait in 10s
+            // increments until calendar moves into the next next day.
+            if (cal.get(Calendar.MINUTE) >= 58) {
+              Thread.sleep(10 * 1000);
+              continue;
+            }
+            return cal;
 
-        default:
-          throw new AssertionError("unexpected time unit: " + timeUnit);
+          default:
+            throw new AssertionError("unexpected time unit: " + timeUnit);
         }
       } catch (InterruptedException e) {
         throw TestUtil.rethrow(e);
@@ -1950,7 +1950,7 @@ public abstract class SqlOperatorBaseTest {
     tester.checkScalar("{fn SECOND(TIMESTAMP '2014-12-10 12:34:56')}", 56,
         "BIGINT NOT NULL");
     tester.checkScalar("{fn TIMESTAMPADD(HOUR, 5,"
-        + " TIMESTAMP '2014-03-29 12:34:56')}",
+            + " TIMESTAMP '2014-03-29 12:34:56')}",
         "2014-03-29 17:34:56", "TIMESTAMP(0) NOT NULL");
     tester.checkScalar("{fn TIMESTAMPDIFF(HOUR,"
         + " TIMESTAMP '2014-03-29 12:34:56',"
@@ -2186,7 +2186,7 @@ public abstract class SqlOperatorBaseTest {
     // submit as non-runtime because the janino exception does not have
     // error position information and the framework is unhappy with that.
     tester1.checkFails(
-            "3 % case 'a' when 'a' then 0 end", DIVISION_BY_ZERO_MESSAGE, true);
+        "3 % case 'a' when 'a' then 0 end", DIVISION_BY_ZERO_MESSAGE, true);
   }
 
   @Test public void testDivideOperator() {
@@ -4325,6 +4325,7 @@ public abstract class SqlOperatorBaseTest {
   }
 
   @Test public void testReverseFunc() {
+<<<<<<< HEAD
     final SqlTester testerMysql = tester(SqlLibrary.MYSQL);
     testerMysql.setFor(SqlLibraryOperators.REVERSE);
     testerMysql.checkString("reverse('')", "", "VARCHAR(0) NOT NULL");
@@ -4334,6 +4335,17 @@ public abstract class SqlOperatorBaseTest {
     testerMysql.checkString("reverse('Hello World')", "dlroW olleH", "VARCHAR(11) NOT NULL");
     testerMysql.checkString("reverse(_UTF8'\u4F60\u597D')", "好你", "VARCHAR(2) NOT NULL");
     testerMysql.checkNull("reverse(cast(null as varchar(1)))");
+=======
+    final SqlTester tester1 = tester(SqlLibrary.MYSQL);
+    tester1.setFor(SqlLibraryOperators.REVERSE);
+    tester1.checkString("reverse('')", "", "VARCHAR(0) NOT NULL");
+    tester1.checkString("reverse('123')", "321", "VARCHAR(3) NOT NULL");
+    tester1.checkString("reverse('abc')", "cba", "VARCHAR(3) NOT NULL");
+    tester1.checkString("reverse('ABC')", "CBA", "VARCHAR(3) NOT NULL");
+    tester1.checkString("reverse('Hello World')", "dlroW olleH", "VARCHAR(11) NOT NULL");
+    tester1.checkString("reverse(_UTF8'\u4F60\u597D')", "好你", "VARCHAR(2) NOT NULL");
+    tester1.checkNull("reverse(cast(null as varchar(1)))");
+>>>>>>> [CALCITE-2601] Add REVERSE function
   }
 
   @Test public void testUpperFunc() {
@@ -4398,7 +4410,7 @@ public abstract class SqlOperatorBaseTest {
     tester.checkFails("json_value('{\"foo\":\"100\"}', 'strict $.foo' returning boolean)",
         INVALID_CHAR_MESSAGE, true);
     tester.checkScalar("json_value('{\"foo\":100}', 'lax $.foo1' returning integer "
-            + "null on empty)", null, "INTEGER");
+        + "null on empty)", null, "INTEGER");
     tester.checkScalar("json_value('{\"foo\":\"100\"}', 'strict $.foo1' returning boolean "
         + "null on error)", null, "BOOLEAN");
 
@@ -4577,6 +4589,7 @@ public abstract class SqlOperatorBaseTest {
   @Test public void testJsonType() {
     tester.setFor(SqlLibraryOperators.JSON_TYPE);
     tester.checkString("json_type('\"1\"')",
+<<<<<<< HEAD
             "STRING", "VARCHAR(20)");
     tester.checkString("json_type('1')",
             "INTEGER", "VARCHAR(20)");
@@ -4595,6 +4608,26 @@ public abstract class SqlOperatorBaseTest {
             "ARRAY", "VARCHAR(20)");
     tester.checkString("json_type('\"2019-01-27 21:24:00\"')",
             "STRING", "VARCHAR(20)");
+=======
+        "STRING", "VARCHAR(20)");
+    tester.checkString("json_type('1')",
+        "INTEGER", "VARCHAR(20)");
+    tester.checkString("json_type('11.45')",
+        "DOUBLE", "VARCHAR(20)");
+    tester.checkString("json_type('true')",
+        "BOOLEAN", "VARCHAR(20)");
+    tester.checkString("json_type('null')",
+        "NULL", "VARCHAR(20)");
+    tester.checkNull("json_type(cast(null as varchar(1)))");
+    tester.checkString("json_type('{\"a\": [10, true]}')",
+        "OBJECT", "VARCHAR(20)");
+    tester.checkString("json_type('{}')",
+        "OBJECT", "VARCHAR(20)");
+    tester.checkString("json_type('[10, true]')",
+        "ARRAY", "VARCHAR(20)");
+    tester.checkString("json_type('\"2019-01-27 21:24:00\"')",
+        "STRING", "VARCHAR(20)");
+>>>>>>> [CALCITE-2601] Add REVERSE function
 
     // nulls
     tester.checkFails("json_type(^null^)",
@@ -4605,29 +4638,33 @@ public abstract class SqlOperatorBaseTest {
   @Test public void testJsonDepth() {
     tester.setFor(SqlLibraryOperators.JSON_DEPTH);
     tester.checkString("json_depth('1')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('11.45')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('true')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('\"2019-01-27 21:24:00\"')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('{}')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('[]')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_depth('null')",
-            null, "INTEGER");
+        null, "INTEGER");
     tester.checkString("json_depth(cast(null as varchar(1)))",
-            null, "INTEGER");
+        null, "INTEGER");
     tester.checkString("json_depth('[10, true]')",
-            "2", "INTEGER");
+        "2", "INTEGER");
     tester.checkString("json_depth('[[], {}]')",
-            "2", "INTEGER");
+        "2", "INTEGER");
     tester.checkString("json_depth('{\"a\": [10, true]}')",
-            "3", "INTEGER");
+        "3", "INTEGER");
     tester.checkString("json_depth('[10, {\"a\": [[1,2]]}]')",
+<<<<<<< HEAD
             "5", "INTEGER");
+=======
+        "5", "INTEGER");
+>>>>>>> [CALCITE-2601] Add REVERSE function
 
     // nulls
     tester.checkFails("json_depth(^null^)",
@@ -4638,51 +4675,55 @@ public abstract class SqlOperatorBaseTest {
   @Test public void testJsonLength() {
     // no path context
     tester.checkString("json_length('{}')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('[]')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('{\"foo\":100}')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_length('{\"a\": 1, \"b\": {\"c\": 30}}')",
-            "2", "INTEGER");
+        "2", "INTEGER");
     tester.checkString("json_length('[1, 2, {\"a\": 3}]')",
-            "3", "INTEGER");
+        "3", "INTEGER");
 
     // lax test
     tester.checkString("json_length('{}', 'lax $')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('[]', 'lax $')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('{\"foo\":100}', 'lax $')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_length('{\"a\": 1, \"b\": {\"c\": 30}}', 'lax $')",
-            "2", "INTEGER");
+        "2", "INTEGER");
     tester.checkString("json_length('[1, 2, {\"a\": 3}]', 'lax $')",
-            "3", "INTEGER");
+        "3", "INTEGER");
     tester.checkString("json_length('{\"a\": 1, \"b\": {\"c\": 30}}', 'lax $.b')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_length('{\"foo\":100}', 'lax $.foo1')",
-            null, "INTEGER");
+        null, "INTEGER");
 
     // strict test
     tester.checkString("json_length('{}', 'strict $')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('[]', 'strict $')",
-            "0", "INTEGER");
+        "0", "INTEGER");
     tester.checkString("json_length('{\"foo\":100}', 'strict $')",
-            "1", "INTEGER");
+        "1", "INTEGER");
     tester.checkString("json_length('{\"a\": 1, \"b\": {\"c\": 30}}', 'strict $')",
-            "2", "INTEGER");
+        "2", "INTEGER");
     tester.checkString("json_length('[1, 2, {\"a\": 3}]', 'strict $')",
-            "3", "INTEGER");
+        "3", "INTEGER");
     tester.checkString("json_length('{\"a\": 1, \"b\": {\"c\": 30}}', 'strict $.b')",
-            "1", "INTEGER");
+        "1", "INTEGER");
 
     // catch error test
     tester.checkFails("json_length('{\"foo\":100}', 'invalid $.foo')",
-            "(?s).*Illegal jsonpath spec.*", true);
+        "(?s).*Illegal jsonpath spec.*", true);
     tester.checkFails("json_length('{\"foo\":100}', 'strict $.foo1')",
+<<<<<<< HEAD
             "(?s).*No results for path.*", true);
+=======
+        "(?s).*No results for path.*", true);
+>>>>>>> [CALCITE-2601] Add REVERSE function
 
     // nulls
     tester.checkFails("json_length(^null^)",
@@ -4693,6 +4734,7 @@ public abstract class SqlOperatorBaseTest {
   @Test public void testJsonKeys() {
     // no path context
     tester.checkString("json_keys('{}')",
+<<<<<<< HEAD
             "[]", "VARCHAR(2000)");
     tester.checkString("json_keys('[]')",
             "null", "VARCHAR(2000)");
@@ -4732,12 +4774,57 @@ public abstract class SqlOperatorBaseTest {
             "null", "VARCHAR(2000)");
     tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}', 'strict $.b')",
             "[\"c\"]", "VARCHAR(2000)");
+=======
+        "[]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[]')",
+        "null", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"foo\":100}')",
+        "[\"foo\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}')",
+        "[\"a\",\"b\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[1, 2, {\"a\": 3}]')",
+        "null", "VARCHAR(2000)");
+
+    // lax test
+    tester.checkString("json_keys('{}', 'lax $')",
+        "[]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[]', 'lax $')",
+        "null", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"foo\":100}', 'lax $')",
+        "[\"foo\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}', 'lax $')",
+        "[\"a\",\"b\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[1, 2, {\"a\": 3}]', 'lax $')",
+        "null", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}', 'lax $.b')",
+        "[\"c\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"foo\":100}', 'lax $.foo1')",
+        "null", "VARCHAR(2000)");
+
+    // strict test
+    tester.checkString("json_keys('{}', 'strict $')",
+        "[]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[]', 'strict $')",
+        "null", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"foo\":100}', 'strict $')",
+        "[\"foo\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}', 'strict $')",
+        "[\"a\",\"b\"]", "VARCHAR(2000)");
+    tester.checkString("json_keys('[1, 2, {\"a\": 3}]', 'strict $')",
+        "null", "VARCHAR(2000)");
+    tester.checkString("json_keys('{\"a\": 1, \"b\": {\"c\": 30}}', 'strict $.b')",
+        "[\"c\"]", "VARCHAR(2000)");
+>>>>>>> [CALCITE-2601] Add REVERSE function
 
     // catch error test
     tester.checkFails("json_keys('{\"foo\":100}', 'invalid $.foo')",
-            "(?s).*Illegal jsonpath spec.*", true);
+        "(?s).*Illegal jsonpath spec.*", true);
     tester.checkFails("json_keys('{\"foo\":100}', 'strict $.foo1')",
+<<<<<<< HEAD
             "(?s).*No results for path.*", true);
+=======
+        "(?s).*No results for path.*", true);
+>>>>>>> [CALCITE-2601] Add REVERSE function
 
     // nulls
     tester.checkFails("json_keys(^null^)",
@@ -6126,7 +6213,7 @@ public abstract class SqlOperatorBaseTest {
         "CHAR(1) NOT NULL");
     // nulls match
     tester1.checkScalar("decode(cast(null as integer), 0, 'a',\n"
-        + " cast(null as integer), 'b', 2, 'c', 'd')", "b",
+            + " cast(null as integer), 'b', 2, 'c', 'd')", "b",
         "CHAR(1) NOT NULL");
   }
 
@@ -6182,13 +6269,13 @@ public abstract class SqlOperatorBaseTest {
     tester.checkBoolean("1 member of multiset[1]", Boolean.TRUE);
     tester.checkBoolean(
         "'2' member of multiset['1']",
-         Boolean.FALSE);
+        Boolean.FALSE);
     tester.checkBoolean(
         "cast(null as double) member of multiset[cast(null as double)]",
-         Boolean.TRUE);
+        Boolean.TRUE);
     tester.checkBoolean(
         "cast(null as double) member of multiset[1.1]",
-         Boolean.FALSE);
+        Boolean.FALSE);
     tester.checkBoolean(
         "1.1 member of multiset[cast(null as double)]", Boolean.FALSE);
   }
@@ -6227,11 +6314,11 @@ public abstract class SqlOperatorBaseTest {
     tester.checkBoolean("(multiset['a', 'b', 'c'] "
             + "multiset union distinct multiset['c', 'd', 'e'])"
             + " submultiset of multiset['a', 'b', 'c', 'd', 'e']",
-         Boolean.TRUE);
+        Boolean.TRUE);
     tester.checkBoolean("(multiset['a', 'b', 'c'] "
             + "multiset union distinct multiset['c', 'd', 'e'])"
             + " submultiset of multiset['a', 'b', 'c', 'd', 'e']",
-         Boolean.TRUE);
+        Boolean.TRUE);
     tester.checkScalar(
         "multiset[cast(null as double)] multiset union multiset[cast(null as double)]",
         "[null, null]",
@@ -6753,7 +6840,7 @@ public abstract class SqlOperatorBaseTest {
     tester.checkScalar(
         "extract(epoch from date '2008-2-23')",
         "1203724800", // number of seconds elapsed since timestamp
-                      // '1970-01-01 00:00:00' for given date
+        // '1970-01-01 00:00:00' for given date
         "BIGINT NOT NULL");
 
     tester.checkScalar(
@@ -6881,7 +6968,7 @@ public abstract class SqlOperatorBaseTest {
     tester.checkScalar(
         "extract(epoch from timestamp '2008-2-23 12:34:56')",
         "1203770096", // number of seconds elapsed since timestamp
-                      // '1970-01-01 00:00:00' for given date
+        // '1970-01-01 00:00:00' for given date
         "BIGINT NOT NULL");
 
     tester.checkScalar(
@@ -7513,52 +7600,52 @@ public abstract class SqlOperatorBaseTest {
   @Test public void testTimestampDiff() {
     tester.setFor(SqlStdOperatorTable.TIMESTAMP_DIFF);
     tester.checkScalar("timestampdiff(HOUR, "
-        + "timestamp '2016-02-24 12:42:25', "
-        + "timestamp '2016-02-24 15:42:25')",
+            + "timestamp '2016-02-24 12:42:25', "
+            + "timestamp '2016-02-24 15:42:25')",
         "3", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(MICROSECOND, "
-        + "timestamp '2016-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:20')",
+            + "timestamp '2016-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:20')",
         "-5000000", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(SQL_TSI_FRAC_SECOND, "
-        + "timestamp '2016-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:20')",
+            + "timestamp '2016-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:20')",
         "-5000000000", "BIGINT NOT NULL");
     tester.checkScalar("timestampdiff(NANOSECOND, "
-        + "timestamp '2016-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:20')",
+            + "timestamp '2016-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:20')",
         "-5000000000", "BIGINT NOT NULL");
     tester.checkScalar("timestampdiff(YEAR, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:25')",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:25')",
         "2", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(WEEK, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:25')",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:25')",
         "104", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(WEEK, "
-        + "timestamp '2014-02-19 12:42:25', "
-        + "timestamp '2016-02-24 12:42:25')",
+            + "timestamp '2014-02-19 12:42:25', "
+            + "timestamp '2016-02-24 12:42:25')",
         "105", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(MONTH, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:25')",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:25')",
         "24", "INTEGER NOT NULL");
     tester.checkScalar("timestampdiff(QUARTER, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "timestamp '2016-02-24 12:42:25')",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "timestamp '2016-02-24 12:42:25')",
         "8", "INTEGER NOT NULL");
     tester.checkFails("timestampdiff(CENTURY, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "timestamp '2614-02-24 12:42:25')",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "timestamp '2614-02-24 12:42:25')",
         "(?s)Encountered \"CENTURY\" at .*", false);
     tester.checkScalar("timestampdiff(QUARTER, "
-        + "timestamp '2014-02-24 12:42:25', "
-        + "cast(null as timestamp))",
+            + "timestamp '2014-02-24 12:42:25', "
+            + "cast(null as timestamp))",
         null, "INTEGER");
     tester.checkScalar("timestampdiff(QUARTER, "
-        + "cast(null as timestamp), "
-        + "timestamp '2014-02-24 12:42:25')",
+            + "cast(null as timestamp), "
+            + "timestamp '2014-02-24 12:42:25')",
         null, "INTEGER");
 
     // timestampdiff with date
@@ -8456,13 +8543,13 @@ public abstract class SqlOperatorBaseTest {
     builder.add0(SqlTypeName.TIMESTAMP, 0L, DateTimeUtils.MILLIS_PER_DAY);
     for (SqlOperator op : SqlStdOperatorTable.instance().getOperatorList()) {
       switch (op.getKind()) {
-      case TRIM: // can't handle the flag argument
-      case EXISTS:
-        continue;
+        case TRIM: // can't handle the flag argument
+        case EXISTS:
+          continue;
       }
       switch (op.getSyntax()) {
-      case SPECIAL:
-        continue;
+        case SPECIAL:
+          continue;
       }
       final SqlOperandTypeChecker typeChecker =
           op.getOperandTypeChecker();
@@ -8639,7 +8726,7 @@ public abstract class SqlOperatorBaseTest {
           (CalciteAssert.ConnectionFactory)
               getFactory().get("connectionFactory");
       try (Connection connection = connectionFactory.createConnection();
-           Statement statement = connection.createStatement()) {
+          Statement statement = connection.createStatement()) {
         final ResultSet resultSet =
             statement.executeQuery(query);
         resultChecker.checkResult(resultSet);
@@ -8684,23 +8771,23 @@ public abstract class SqlOperatorBaseTest {
                 SqlParserPos.ZERO));
       }
       switch (type.getSqlTypeName()) {
-      case BOOLEAN:
-        return SqlLiteral.createBoolean((Boolean) value, SqlParserPos.ZERO);
-      case TINYINT:
-      case SMALLINT:
-      case INTEGER:
-      case BIGINT:
-        return SqlLiteral.createExactNumeric(
-            value.toString(), SqlParserPos.ZERO);
-      case CHAR:
-      case VARCHAR:
-        return SqlLiteral.createCharString(value.toString(), SqlParserPos.ZERO);
-      case TIMESTAMP:
-        TimestampString ts = TimestampString.fromMillisSinceEpoch((Long) value);
-        return SqlLiteral.createTimestamp(ts, type.getPrecision(),
-            SqlParserPos.ZERO);
-      default:
-        throw new AssertionError(type);
+        case BOOLEAN:
+          return SqlLiteral.createBoolean((Boolean) value, SqlParserPos.ZERO);
+        case TINYINT:
+        case SMALLINT:
+        case INTEGER:
+        case BIGINT:
+          return SqlLiteral.createExactNumeric(
+              value.toString(), SqlParserPos.ZERO);
+        case CHAR:
+        case VARCHAR:
+          return SqlLiteral.createCharString(value.toString(), SqlParserPos.ZERO);
+        case TIMESTAMP:
+          TimestampString ts = TimestampString.fromMillisSinceEpoch((Long) value);
+          return SqlLiteral.createTimestamp(ts, type.getPrecision(),
+              SqlParserPos.ZERO);
+        default:
+          throw new AssertionError(type);
       }
     }
   }
