@@ -1483,7 +1483,7 @@ period:
 | {fn UCASE(string)} | Returns a string in which all alphabetic characters in *string* have been converted to upper case
 | {fn REPLACE(string, search, replacement)} | Returns a string in which all the occurrences of *search* in *string* are replaced with *replacement*; if *replacement* is the empty string, the occurrences of *search* are removed
 | {fn ASCII(string)} | Returns the corresponding ASCII code of the first character of *string*; Returns 0 if *string* is empty; Returns NULL if *string* is NULL; Returns the Unicode code point for non-ASCII character
-| {fn REVERSE(string)} | Returns the string with the order of the characters reversed.
+| {fn REVERSE(string)} | Returns the *string* with the order of the characters reversed.
 
 Not implemented:
 
