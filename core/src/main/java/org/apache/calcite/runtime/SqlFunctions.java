@@ -306,6 +306,21 @@ public class SqlFunctions {
     return s.substring(len - n);
   }
 
+  /** SQL CHR(decimal) function. */
+  public static String chr(BigDecimal n) {
+    return String.valueOf(Character.toChars(n.intValue()));
+  }
+
+  /** SQL CHR(long) function. */
+  public static String chr(long n) {
+    return String.valueOf(Character.toChars((int) n));
+  }
+
+  /** SQL CHR(double) function. */
+  public static String chr(double n) {
+    return String.valueOf(Character.toChars((int) n));
+  }
+
   /** SQL CHARACTER_LENGTH(string) function. */
   public static int charLength(String s) {
     return s.length();
