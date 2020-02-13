@@ -350,6 +350,17 @@ public class UdfTest {
         .returns("");
   }
 
+  @Test public void testExpressionOrder() {
+    final CalciteAssert.AssertThat with = withUdf();
+    final String sql2 = "select\n"
+        + "  \"adhoc\".my_str(upper(\"adhoc\".null4(\"name\"))) as p\n"
+        + " from \"adhoc\".EMPLOYEES where \"adhoc\".null4(\"name\") is not null "
+        + " and \"adhoc\".my_str(\"adhoc\".null4(\"name\"))='SEBASTIAN'";
+    with.query(sql2)
+        .returnsUnordered(
+            "P=<SEBASTIAN>");
+  }
+
   /** Tests that we generate the appropriate checks for a "semi-strict"
    * function.
    *

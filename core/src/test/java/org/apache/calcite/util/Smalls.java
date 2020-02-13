@@ -439,7 +439,7 @@ public class Smalls {
   public static class MyToStringFunction {
     public static String eval(@Parameter(name = "o") Object o) {
       if (o == null) {
-        return "<null>";
+        throw new RuntimeException("Should never be null!");
       }
       return "<" + o.toString() + ">";
     }
