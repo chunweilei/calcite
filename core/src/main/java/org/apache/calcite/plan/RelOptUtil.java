@@ -868,6 +868,10 @@ public abstract class RelOptUtil {
       // nothing to do
       return rel;
     }
+    if (rowType.getFieldCount() != castRowType.getFieldCount()) {
+      throw new IllegalArgumentException("Field count is not equal: " +
+          "rowType [" + rowType + "] castRowType [" + castRowType + "]");
+    }
     final RexBuilder rexBuilder = rel.getCluster().getRexBuilder();
     List<RexNode> castExps;
     RelNode input;
